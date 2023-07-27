@@ -89,4 +89,25 @@ for o=1:noBS
     text(xBS(o) + 20, yBS(o) + 10, zBS(o) - 10,['BS', num2str(o)],'FontSize', 12);
 end
 
+% Plotting LoS Channel between BSs and UAVs
+bsColorCodeLine = ['c:';'r:';'y:'];
+for i = 1:noUAV
+    for directBS = 1:noBS
+        plot3([xUAV(i) xBS(directBS)], [yUAV(i) yBS(directBS)],[zUAV(i) zBS(directBS)], bsColorCodeLine(directBS,:),'linewidth', 1); drawnow
+    end
+end
+
+% Plotting LoS Channel between users and UAVs
+userColorCodeLine = ['m-.';'g-.';'b-.'];
+for i = 1:noUAV
+    for directUsers = 1:noUsers
+        plot3([xUAV(i) xUser(directUsers)], [yUAV(i) yUser(directUsers)],[zUAV(i) zUser(directUsers)], userColorCodeLine(directUsers,:),'linewidth', 1); drawnow
+    end
+end
+
+% Plotting UAV default path
+for i = 1:noUAV
+    plot3([xUAV_S(i) xUAV_E(i)], [yUAV_S(i) yUAV_E(i)],[zUAV_S(i) zUAV_E(i)], 'y--','linewidth', 0.5); drawnow
+end
+
 
