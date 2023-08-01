@@ -93,7 +93,7 @@ end
 bsColorCodeLine = ['c:';'r:';'y:'];
 for i = 1:noUAV
     for directBS = 1:noBS
-        plot3([xUAV(i) xBS(directBS)], [yUAV(i) yBS(directBS)],[zUAV(i) zBS(directBS)], bsColorCodeLine(directBS,:),'linewidth', 1); drawnow
+        plot3([xUAV(i) xBS(directBS)], [yUAV(i) yBS(directBS)],[zUAV(i) zBS(directBS)], bsColorCodeLine(directBS,:),'linewidth', 1.5); drawnow
     end
 end
 
@@ -143,12 +143,12 @@ g = sqrt(1/2)*(randn(1,1)+1i*randn(1,1));
 
 
 %% Simulation
-
+index = 1;
 for j = enLength:-100:0
     for i=1:noUAV
         zUAV(i) = mx*j + c;
         yUAV(i) = j;
-        plot3(xUAV(i),  yUAV(i),  zUAV(i), 'r+','linewidth', 0.5);hold on;
+        plot3(xUAV(i),  yUAV(i),  zUAV(i), '+','Color','#660000','linewidth', 1);hold on;
 
         % LoS distance between UAVs and BSs
         for bm=1:noBS
@@ -161,13 +161,7 @@ for j = enLength:-100:0
             PLoS_BS(index,i,bm) = 1/(1+(10*exp(-0.6*(angleUAV_BS(i,bm)-10))));
             
             pow_LoS_BS = b_0*(DisUAV_BS(i,bm)^(-eta));
-            pow_NLoS_BS = k*b_0*(DisUAV_BS(i,bm)^(-eta));
-            Ch_pow_LoS_BS(index,i,bm) = pow2db(pow_LoS_BS); 
-            Ch_pow_NLoS_BS(index,i,bm) = pow2db(pow_NLoS_BS);
             
-            % Expected Path Loss Channel gain
-            E_bd_BS = PLoS_BS(index,i,bm)*pow_LoS_BS + (1 - PLoS_BS(index,i,bm))*pow_NLoS_BS;
-            E_bd_dB_BS(index,i,bm) = pow2db(E_bd_BS); % in dB
             
             % Angle depend rician factor
             K_UAV_BS(i,bm) = A1*exp(A2*angleUAV_BS(i,bm)*(pi/180));
@@ -192,13 +186,6 @@ for j = enLength:-100:0
             PLoS(index,i,m) = 1/(1+(10*exp(-0.6*(angleUAV_User(i,m)-10))));
             
             pow_LoS = b_0*(DisUAV_User(i,m)^(-eta));
-            pow_NLoS = k*b_0*(DisUAV_User(i,m)^(-eta));
-            Ch_pow_LoS(index,i,m) = pow2db(pow_LoS); 
-            Ch_pow_NLoS(index,i,m) = pow2db(pow_NLoS);
-            
-            % Expected Path Loss Channel gain
-            E_bd = PLoS(index,i,m)*pow_LoS + (1 - PLoS(index,i,m))*pow_NLoS;
-            E_bd_dB(index,i,m) = pow2db(E_bd); % in dB
             
             
             % Angle depend rician factor
