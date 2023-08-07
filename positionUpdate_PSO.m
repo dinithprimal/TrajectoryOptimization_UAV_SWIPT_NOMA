@@ -4,8 +4,8 @@ function updatedPosition = positionUpdate_PSO(xUAV,yUAV,zUAV,minRat,noUsers,xUse
     
     %% Problem
     nVar = 2;
-    varMin = [-500 -100];
-    varMax = [500 200];
+    varMin = [-50 -10];
+    varMax = [50 10];
     
     %% PSO parameters
     

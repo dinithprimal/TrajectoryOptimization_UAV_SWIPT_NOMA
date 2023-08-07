@@ -150,8 +150,9 @@ for j = enLength:-100:0
         yUAV(i) = j;
         plot3(xUAV(i),  yUAV(i),  zUAV(i), '+','Color','#660000','linewidth', 1);hold on;
 
-        % LoS distance between UAVs and BSs
+        
         for bm=1:noBS
+            % LoS distance between UAVs and BSs
             groundDisUAV_BS(i,bm) = sqrt((xUAV(i)-xBS(bm))^2 + (yUAV(i)-yBS(bm))^2);
             DisUAV_BS(i,bm) = sqrt(groundDisUAV_BS(i,bm)^2 + (zBS(bm)-zUAV(i))^2);
             
@@ -174,8 +175,9 @@ for j = enLength:-100:0
             
         end
         
-        % LoS distance between UAVs and Users
+        
         for m=1:noUsers
+            % LoS distance between UAVs and Users
             groundDisUAV_User(i,m) = sqrt((xUAV(i)-xUser(m))^2 + (yUAV(i)-yUser(m))^2);
             DisUAV_User(i,m) = sqrt(groundDisUAV_User(i,m)^2 + zUAV(i)^2);
             
@@ -200,16 +202,16 @@ for j = enLength:-100:0
         end
         
         % Power coefficeints calculation for users
-        [pow_coef_array_ch(index,:), pow_coef_array_fr(index,:)] = findPowCoeff(abs(h_UAV_Users(index,i,:)),noUsers);
+        pow_coef_array_ch(index,:) = findPowCoeff(abs(h_UAV_Users(index,i,:)),noUsers);
         
         % Achievable Rate Calculations for Users
-        [achievableRate_ch(index,:), achievableRate_fr(index,:)] = findAchievableRate(h_UAV_Users(index,i,:),pow_coef_array_ch(index,:),pow_coef_array_fr(index,:),noUsers);
+        achievableRate_ch(index,:) = findAchievableRate(h_UAV_Users(index,i,:),pow_coef_array_ch(index,:),pow_coef_array_fr(index,:),noUsers);
         
         % Achievable Rate Calculations for BSs
-        achievableRate_BS(index,:) = findAchievableRate_BS(h_UAV_BS(index,i,:),noBS);
+        %achievableRate_BS(index,:) = findAchievableRate_BS(h_UAV_BS(index,i,:),noBS);
         
         % Achievable Rate Calculations for Users in SWIPT model
-        [achievableRate_ch_SWIPT(index,:), achievableRate_fr_SWIPT(index,:)] = findAchievableRate_SWIPT(h_UAV_Users(index,i,:),h_UAV_BS(index,i,:),pow_coef_array_ch(index,:),pow_coef_array_fr(index,:),noUsers);
+        achievableRate_ch_SWIPT(index,:) = findAchievableRate_SWIPT(h_UAV_Users(index,i,:),h_UAV_BS(index,i,:),pow_coef_array_ch(index,:),pow_coef_array_fr(index,:),noUsers);
         
         minRate = min(achievableRate_ch(index,:))
         if index>1 && index<21
