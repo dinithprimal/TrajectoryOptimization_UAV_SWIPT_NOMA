@@ -1,4 +1,4 @@
-function ach_ch = findAchievableRate(h_UAV_Users,coefArr_ch,coefArr_fr, noUsers)
+function ach_ch = findAchievableRate(h_UAV_Users,coefArr_ch, noUsers)
     % System Parameters
     B = 10^6;
     Pt = 20;     %in dBm

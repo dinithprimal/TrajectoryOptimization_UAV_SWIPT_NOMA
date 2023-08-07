@@ -1,4 +1,4 @@
-function ach_ch = findAchievableRate_SWIPT(h_UAV_Users,h_UAV_BS,coefArr_ch,coefArr_fr,noUsers)
+function ach_ch = findAchievableRate_SWIPT(h_UAV_Users,h_UAV_BS,coefArr_ch,noUsers)
     
     % System Parameters
     B = 10^6;

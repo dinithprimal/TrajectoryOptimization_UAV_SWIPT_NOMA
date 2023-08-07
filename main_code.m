@@ -144,7 +144,7 @@ g = sqrt(1/2)*(randn(1,1)+1i*randn(1,1));
 
 %% Simulation
 index = 1;
-for j = enLength:-100:0
+for j = enLength:-10:0
     for i=1:noUAV
         zUAV(i) = mx*j + c;
         yUAV(i) = j;
@@ -205,16 +205,16 @@ for j = enLength:-100:0
         pow_coef_array_ch(index,:) = findPowCoeff(abs(h_UAV_Users(index,i,:)),noUsers);
         
         % Achievable Rate Calculations for Users
-        achievableRate_ch(index,:) = findAchievableRate(h_UAV_Users(index,i,:),pow_coef_array_ch(index,:),pow_coef_array_fr(index,:),noUsers);
+        achievableRate_ch(index,:) = findAchievableRate(h_UAV_Users(index,i,:),pow_coef_array_ch(index,:),noUsers);
         
         % Achievable Rate Calculations for BSs
         %achievableRate_BS(index,:) = findAchievableRate_BS(h_UAV_BS(index,i,:),noBS);
         
         % Achievable Rate Calculations for Users in SWIPT model
-        achievableRate_ch_SWIPT(index,:) = findAchievableRate_SWIPT(h_UAV_Users(index,i,:),h_UAV_BS(index,i,:),pow_coef_array_ch(index,:),pow_coef_array_fr(index,:),noUsers);
+        achievableRate_ch_SWIPT(index,:) = findAchievableRate_SWIPT(h_UAV_Users(index,i,:),h_UAV_BS(index,i,:),pow_coef_array_ch(index,:),noUsers);
         
         minRate = min(achievableRate_ch(index,:))
-        if index>1 && index<21
+        if index>1 && index<201
             updatedPosition = positionUpdate_PSO(xUAV(i),yUAV(i),zUAV(i),minRate,noUsers,xUser,yUser,g);
             up_xUAV(index,i) = xUAV(i) + updatedPosition.position(1);
             up_zUAV(index,i) = zUAV(i) + updatedPosition.position(2);
@@ -376,16 +376,16 @@ for j = enLength:-100:0
 %         
 %         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Power coefficeints calculation for users
-        [pow_coef_array_ch_Up(index,:), pow_coef_array_fr_Up(index,:)] = findPowCoeff(abs(h_UAV_Users_Up(index,i,:)),noUsers);
+        pow_coef_array_ch_Up(index,:) = findPowCoeff(abs(h_UAV_Users_Up(index,i,:)),noUsers);
         
         % Achievable Rate Calculations for Users
-        [achievableRate_ch_Up(index,:), achievableRate_fr_Up(index,:)] = findAchievableRate(h_UAV_Users_Up(index,i,:),pow_coef_array_ch_Up(index,:),pow_coef_array_fr_Up(index,:),noUsers);
+        achievableRate_ch_Up(index,:)= findAchievableRate(h_UAV_Users_Up(index,i,:),pow_coef_array_ch_Up(index,:),noUsers);
         
         % Achievable Rate Calculations for BSs
         achievableRate_BS_Up(index,:) = findAchievableRate_BS(h_UAV_BS_Up(index,i,:),noBS);
         
         % Achievable Rate Calculations for Users in SWIPT model
-        [achievableRate_ch_SWIPT_Up(index,:), achievableRate_fr_SWIPT_Up(index,:)] = findAchievableRate_SWIPT(h_UAV_Users_Up(index,i,:),h_UAV_BS_Up(index,i,:),pow_coef_array_ch_Up(index,:),pow_coef_array_fr_Up(index,:),noUsers);
+        achievableRate_ch_SWIPT_Up(index,:) = findAchievableRate_SWIPT(h_UAV_Users_Up(index,i,:),h_UAV_BS_Up(index,i,:),pow_coef_array_ch_Up(index,:),noUsers);
         
         minAchRate(index) = min(achievableRate_ch(index,:));
         minAchRate_Up(index) = min(achievableRate_ch_Up(index,:));

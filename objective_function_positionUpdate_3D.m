@@ -42,9 +42,9 @@ function [minZ, z] = objective_function_positionUpdate_3D(x,xUAV,yUAV,zUAV,noUse
         h_UAV_Users(m) = sqrt(pow_LoS)*g_UAV_User(m);
     end
     
-    [pow_coef_array_ch, pow_coef_array_fr] = findPowCoeff(abs(h_UAV_Users),noUsers);
+    pow_coef_array_ch = findPowCoeff(abs(h_UAV_Users),noUsers);
     
-    [achievableRate_ch, achievableRate_fr] = findAchievableRate(h_UAV_Users,pow_coef_array_ch,pow_coef_array_fr,noUsers);
+    achievableRate_ch = findAchievableRate(h_UAV_Users,pow_coef_array_ch,noUsers);
 
     minZ = min(achievableRate_ch);
     
