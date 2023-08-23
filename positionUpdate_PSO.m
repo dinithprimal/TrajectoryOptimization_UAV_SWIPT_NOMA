@@ -1,11 +1,11 @@
-function updatedPosition = positionUpdate_PSO(xUAV,yUAV,zUAV,minRat,noUsers,xUser,yUser,g)
+function updatedPosition = positionUpdate_PSO(xUAV,yUAV,zUAV,xBS,yBS,zBS,minRat,noUsers,xUser,yUser,g,noBS)
     
     %rates = zeros(1,noUsers);
     
     %% Problem
     nVar = 2;
-    varMin = [-50 -10];
-    varMax = [50 10];
+    varMin = [-100 -15];
+    varMax = [100 15];
     
     %% PSO parameters
     
@@ -18,7 +18,7 @@ function updatedPosition = positionUpdate_PSO(xUAV,yUAV,zUAV,minRat,noUsers,xUse
     chi = 2*kappa/abs(2-phi-sqrt(phi^2-4*phi));
     
     maxIter = 5000;
-    nPop = 50;
+    nPop = 100;
     w = chi;
     d = 0.99;
     c1 = chi*phi1;
@@ -38,10 +38,18 @@ function updatedPosition = positionUpdate_PSO(xUAV,yUAV,zUAV,minRat,noUsers,xUse
         % Generate random solutions
         for k = 1:nVar
             x(i).position(k) = unifrnd(varMin(k),varMax(k));
+            if k==2
+                if (zUAV + x(i).position(k)) <= 100
+%                     val00 = zUAV
+%                     val0 = x(i).position(k)
+%                     val = zUAV + x(i).position(k)
+                    x(i).position(k) = 100 - zUAV;
+                end
+            end
         end
         x(i).velocity = zeros([1 nVar]);    % Initial velocity
         [minZ, x(i).fitness] = objective_function_positionUpdate_3D(x(i).position,...
-            xUAV,yUAV,zUAV,noUsers,xUser,yUser,minRate,g);
+            xUAV,yUAV,zUAV,xBS,yBS,zBS,noUsers,xUser,yUser,minRate,g,noBS);
         
        if minZ > minRate
             minRate = minZ;
@@ -62,16 +70,27 @@ function updatedPosition = positionUpdate_PSO(xUAV,yUAV,zUAV,minRat,noUsers,xUse
             x(i).velocity = w*x(i).velocity + c1*rand([1, nVar]).*(x(i).best.position - x(i).position) + c2*rand([1 nVar]).*(global_best.position - x(i).position); % update velocity
             x(i).position = x(i).position + x(i).velocity;  % update position
             %check the range
-            for k = 1:nVar
+            for k = 1:nVar                
                 if x(i).position(k) < varMin(k)
                     x(i).position(k) = varMin(k);
                 end
                 if x(i).position(k) > varMax(k)
                     x(i).position(k) = varMax(k);
                 end
+                if k==2
+                    if (zUAV + x(i).position(k)) <= 100
+%                         val00 = zUAV
+%                         val0 = x(i).position(k)
+%                         val = zUAV + x(i).position(k)
+                        x(i).position(k) = 100 - zUAV;
+                    end
+                end
             end
+%             if (zUAV + x(i).position(2)) < 100
+%                x(i).position(2) = 100 - zUAV;
+%             end
             [minZ, x(i).fitness] = objective_function_positionUpdate_3D(x(i).position,...
-                xUAV,yUAV,zUAV,noUsers,xUser,yUser,minRate,g);
+                xUAV,yUAV,zUAV,xBS,yBS,zBS,noUsers,xUser,yUser,minRate,g,noBS);
             
            if minZ > minRate
                 minRate = minZ;
@@ -102,5 +121,5 @@ function updatedPosition = positionUpdate_PSO(xUAV,yUAV,zUAV,minRat,noUsers,xUse
         %global_best.position(3) = 0;
     end
     updatedPosition = global_best;
-    updatedPosition.minRate = minRate
+    updatedPosition.minRate = minRate;
 end
